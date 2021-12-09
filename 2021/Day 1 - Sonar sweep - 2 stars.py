@@ -1,4 +1,4 @@
-path = '/Users/sebastiangolec/AdventOfCode/2021/input'
+path = '/Users/sebastiangolec/AdventOfCode/2021/Day 1 input'
 
 input_file = open(path, 'r')
 counter = 0
