@@ -1,5 +1,6 @@
 path = "/Users/sebastiangolec/AdventOfCode/2021/Day 2 input"
 
+# 1 star
 def calculatePosition(input):
     distance = 0
     depth = 0
@@ -16,6 +17,7 @@ def calculatePosition(input):
 
     return distance, depth
 
+# 2 stars
 def calculatePositionWithAim(input):
     distance = 0;
     depth = 0;
@@ -34,7 +36,6 @@ def calculatePositionWithAim(input):
 
     return distance, depth
 
-input_file = open(path, 'r').readlines()
 position = calculatePosition(open(path, 'r').readlines())
 positionWithAim = calculatePositionWithAim(open(path, 'r').readlines())
 
