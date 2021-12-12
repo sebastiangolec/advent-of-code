@@ -1,4 +1,4 @@
-path = "/Users/sebastiangolec/AdventOfCode/2021/Day 2 input"
+path = "2021/Day 2 input"
 
 # 1 star
 def calculatePosition(input):

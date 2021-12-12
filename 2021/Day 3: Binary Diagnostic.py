@@ -1,4 +1,4 @@
-path = "/Users/sebastiangolec/AdventOfCode/2021/Day 3 input"
+path = "2021/Day 3 input"
 
 def calculatePowerConsumption(input) -> int:
     gammaRate = determineGammaRate(input)

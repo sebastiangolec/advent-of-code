@@ -1,4 +1,4 @@
-path = '/Users/sebastiangolec/AdventOfCode/2021/Day 1 input'
+path = "2021/Day 1 input"
 
 # 1 star
 def calculateDepressions(input):
