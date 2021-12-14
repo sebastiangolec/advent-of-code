@@ -1,39 +1,17 @@
+from dataclasses import dataclass
+
+@dataclass
 class Field:
-    def __init__(self, value: int):
-        self._value = value
-        self._marked = False
-
-    @property
-    def value(self):
-        return self._value
+    value: int
+    marked: bool = False
     
-    @value.setter
-    def value(self, value):
-        self._value = value
-    
-    @property
-    def marked(self):
-        return self._marked
-    
-    @marked.setter
-    def marked(self, value):
-        self._marked = value
-
     def markField(self):
         self.marked = True
 
 class Line:
     def __init__(self, line: list[int]):
-        self._fields = self.createFields(line)
+        self.fields = self.createFields(line)
     
-    @property
-    def fields(self):
-        return self._fields
-    
-    @fields.setter
-    def fields(self, value):
-        self._fields = value
-
     def createFields(self, line: list[int]) -> list[Field]:
         fields = []
 
@@ -44,7 +22,7 @@ class Line:
     
     def markNumber(self, number: int):
         for field in self.fields:
-            if field.value == number:
+            if field.value is number:
                 field.markField()
 
     def checkWinner(self) -> bool:
@@ -63,7 +41,7 @@ class Line:
         score = 0
 
         for field in self.fields:
-            if field.marked == False:
+            if field.marked is False:
                 score += field.value
         
         return score
@@ -71,25 +49,9 @@ class Line:
 
 class Board:
     def __init__(self, board: list[str]):
-        self._lines = self.createLines(board)
-        self._columns = self.createColumns(board)
+        self.lines = self.createLines(board)
+        self.columns = self.createColumns(board)
         
-    @property
-    def lines(self):
-        return self._lines
-
-    @lines.setter
-    def lines(self, value):
-        self._lines = value
-
-    @property
-    def columns(self):
-        return self._columns
-
-    @columns.setter
-    def columns(self, value):
-        self._columns = value
-    
     def createLines(self, board: list[str]) -> list[Line]:
         lines = []
 
@@ -106,15 +68,10 @@ class Board:
         for line in board:
             clearBoard.append(self.clearLine(line))
 
-        i = 0
-        while i < len(clearBoard):
+        for index, row in enumerate(clearBoard):
             column = []
-
-            for line in clearBoard:
-                column.append(line[i])
-            
+            column.append(row[index])
             columns.append(Line(column))
-            i += 1
 
         return columns
 
@@ -131,6 +88,7 @@ class Board:
     def markNumber(self, number: int):
         for line in self.lines:
             line.markNumber(number)
+
         for column in self.columns:
             column.markNumber(number)
 
@@ -138,6 +96,7 @@ class Board:
         for line in self.lines:
             if line.checkWinner():
                 return True
+                
         for column in self.columns:
             if column.checkWinner():
                 return True
@@ -157,7 +116,7 @@ def separateBoardLines(input: list[str]) -> list[list[str]]:
     sublist = []
 
     for line in input:
-        if line.isspace() == False:
+        if line.isspace() is False:
             sublist.append(line)
 
         if len(sublist) == 5:
@@ -185,7 +144,7 @@ def convertToNumbers(input: str) -> list[int]:
     
     return numbers
 
-def play(boards: list[Board], drawnNumbers: list[int]) -> int:
+def playToWin(boards: list[Board], drawnNumbers: list[int]) -> int:
     for number in drawnNumbers:
         for board in boards:
             board.markNumber(number)
@@ -201,5 +160,5 @@ drawnNumbersInput = input.pop(0)
 input.pop(0) # removes empty line after popping drawn numbers
 boards = createBoards(input)
 drawnNumbers = convertToNumbers(drawnNumbersInput)
-score = play(boards, drawnNumbers)
+score = playToWin(boards, drawnNumbers)
 print(score)
