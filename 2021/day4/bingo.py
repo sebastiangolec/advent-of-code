@@ -117,71 +117,66 @@ class Board:
 
         return score * number
 
-def separateBoardLines(input: list[str]) -> list[list[str]]:
-    boardLines = []
-    sublist = []
+class Bingo:
+    def __init__(self, input: list[str]):
+        self.boards = self.createBoards(input)
+        self.drawnNumbers = self.convertToNumbers(input.pop(0))
 
-    for line in input:
-        if line.isspace() is False:
-            sublist.append(line)
+    def convertToNumbers(self, input: str) -> list[int]:
+        numbers = []
 
-        if len(sublist) == 5:
-            boardLines.append(sublist)
-            sublist = []
-    
-    return boardLines
-
-
-def createBoards(input: list[str]) -> list[Board]:
-    boardInputs = separateBoardLines(input)
-    boards = []
-
-    for boardInput in boardInputs:
-        boards.append(Board(boardInput))
+        for string in input.split(","):
+            if string.isnumeric:
+                numbers.append(int(string))
         
-    return boards
+        return numbers
 
-def convertToNumbers(input: str) -> list[int]:
-    numbers = []
+    def createBoards(self, input: list[str]) -> list[Board]:
+        boardInputs = self.separateBoardLines(input)
+        boards = []
 
-    for string in input.split(","):
-        if string.isnumeric:
-            numbers.append(int(string))
-    
-    return numbers
-
-def playToWin(boards: list[Board], drawnNumbers: list[int]) -> int:
-    for number in drawnNumbers:
-        for board in boards:
-            board.markNumber(number)
-
-            if board.checkWinner():
-                return board.calculatePoints(number)
-
-def playToLose(boards: list[Board], drawnNumbers: list[int]) -> int:
-    for number in drawnNumbers:
-        losers = boards
+        for boardInput in boardInputs:
+            boards.append(Board(boardInput))
+            
+        return boards
         
-        for board in boards:
-            board.markNumber(number)
+    def separateBoardLines(self, input: list[str]) -> list[list[str]]:
+        boardLines = []
+        sublist = []
 
-            if board.checkWinner():
-                if len(boards) > 1:
-                    losers.remove(board)
-                else:
-                    return boards.pop().calculatePoints(number)
+        for line in input[1:]:
+            if line.isspace() is False:
+                sublist.append(line)
 
-        boards = losers
+            if len(sublist) == 5:
+                boardLines.append(sublist)
+                sublist = []
+        
+        return boardLines
+
+    def playToWin(self) -> int:
+        for number in self.drawnNumbers:
+            for board in self.boards:
+                board.markNumber(number)
+
+                if board.checkWinner():
+                    return board.calculatePoints(number)
+
+    def playToLose(self) -> int:
+        for number in self.drawnNumbers:
+            losers = self.boards
+            
+            for board in self.boards:
+                board.markNumber(number)
+
+                if board.checkWinner():
+                    if len(self.boards) > 1:
+                        losers.remove(board)
+                    else:
+                        return boards.pop().calculatePoints(number)
+
+            boards = losers
                 
-path = "2021/day4/input"
-file = open(path, 'r')
-input = file.readlines()
-drawnNumbersInput = input.pop(0)
-input.pop(0) # removes empty line after popping drawn numbers
-boards = createBoards(input)
-drawnNumbers = convertToNumbers(drawnNumbersInput)
-score = playToWin(boards, drawnNumbers)
-print(score)
-
-losingScore = playToLose(boards, drawnNumbers)
-print(losingScore)
+bingo = Bingo(open("2021/day4/input", 'r').readlines())
+print(bingo.playToWin())
+print(bingo.playToLose())
