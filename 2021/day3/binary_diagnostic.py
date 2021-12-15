@@ -1,4 +1,5 @@
-path = "2021/Day 3 input"
+'''--- Day 3: Binary Diagnostic ---'''
+path = "2021/day3/input"
 
 def calculatePowerConsumption(input) -> int:
     gammaRate = determineGammaRate(input)

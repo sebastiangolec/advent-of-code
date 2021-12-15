@@ -1,4 +1,5 @@
-path = "2021/Day 2 input"
+'''--- Day 2: Dive! ---'''
+path = "2021/day2/input"
 
 # 1 star
 def calculatePosition(input):

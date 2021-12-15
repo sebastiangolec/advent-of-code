@@ -1,3 +1,4 @@
+'''--- Day 4: Giant Squid ---'''
 from dataclasses import dataclass
 
 @dataclass
@@ -68,10 +69,15 @@ class Board:
         for line in board:
             clearBoard.append(self.clearLine(line))
 
-        for index, row in enumerate(clearBoard):
+        i = 0
+        while i < len(clearBoard):
             column = []
-            column.append(row[index])
+
+            for line in clearBoard:
+                column.append(line[i])
+            
             columns.append(Line(column))
+            i += 1
 
         return columns
 
@@ -96,7 +102,7 @@ class Board:
         for line in self.lines:
             if line.checkWinner():
                 return True
-                
+
         for column in self.columns:
             if column.checkWinner():
                 return True
@@ -148,12 +154,26 @@ def playToWin(boards: list[Board], drawnNumbers: list[int]) -> int:
     for number in drawnNumbers:
         for board in boards:
             board.markNumber(number)
-            isWinner = board.checkWinner()
 
-            if isWinner:
+            if board.checkWinner():
                 return board.calculatePoints(number)
 
-path = "2021/Day 4 input"
+def playToLose(boards: list[Board], drawnNumbers: list[int]) -> int:
+    for number in drawnNumbers:
+        losers = boards
+        
+        for board in boards:
+            board.markNumber(number)
+
+            if board.checkWinner():
+                if len(boards) > 1:
+                    losers.remove(board)
+                else:
+                    return boards.pop().calculatePoints(number)
+
+        boards = losers
+                
+path = "2021/day4/input"
 file = open(path, 'r')
 input = file.readlines()
 drawnNumbersInput = input.pop(0)
@@ -162,3 +182,6 @@ boards = createBoards(input)
 drawnNumbers = convertToNumbers(drawnNumbersInput)
 score = playToWin(boards, drawnNumbers)
 print(score)
+
+losingScore = playToLose(boards, drawnNumbers)
+print(losingScore)

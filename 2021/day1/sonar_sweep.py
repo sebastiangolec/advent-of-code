@@ -1,4 +1,5 @@
-path = "2021/Day 1 input"
+'''--- Day 1: Sonar Sweep ---'''
+path = "2021/day1/input"
 
 # 1 star
 def calculateDepressions(input):
