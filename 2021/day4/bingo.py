@@ -1,4 +1,7 @@
 from dataclasses import dataclass
+from collections import namedtuple
+
+Win = namedtuple('Win', ['index', 'score', 'drawnNumber'])
 
 @dataclass
 class Field:
@@ -153,13 +156,13 @@ class Bingo:
         
         return boardLines
 
-    def playToWin(self) -> int:
+    def playToWin(self) -> Win:
         for number in self.drawnNumbers:
             for board in self.boards:
                 board.markNumber(number)
 
                 if board.checkWinner():
-                    return board.calculatePoints(number)
+                    return Win(self.boards.index(board), board.calculatePoints(number), number)
 
     def playToLose(self) -> int:
         for number in self.drawnNumbers:
