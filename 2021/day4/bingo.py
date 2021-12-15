@@ -1,4 +1,3 @@
-'''--- Day 4: Giant Squid ---'''
 from dataclasses import dataclass
 
 @dataclass
@@ -176,7 +175,3 @@ class Bingo:
                         return boards.pop().calculatePoints(number)
 
             boards = losers
-                
-bingo = Bingo(open("2021/day4/input", 'r').readlines())
-print(bingo.playToWin())
-print(bingo.playToLose())
