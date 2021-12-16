@@ -164,17 +164,24 @@ class Bingo:
                 if board.checkWinner():
                     return Win(self.boards.index(board), board.calculatePoints(number), number)
 
-    def playToLose(self) -> int:
+    def playToLose(self) -> Win:
+        losers = self.boards.copy()
+
         for number in self.drawnNumbers:
-            losers = self.boards
-            
-            for board in self.boards:
-                board.markNumber(number)
 
-                if board.checkWinner():
-                    if len(self.boards) > 1:
-                        losers.remove(board)
-                    else:
-                        return boards.pop().calculatePoints(number)
+            if len(losers) > 1:
+                newLosers = []
 
-            boards = losers
+                for board in losers:
+                    board.markNumber(number)
+
+                    if board.checkWinner() is False:
+                        newLosers.append(board)
+                
+                losers = newLosers.copy()
+            else:
+                winner = losers[0]
+                winner.markNumber(number)
+                
+                if winner.checkWinner():
+                    return Win(self.boards.index(winner), winner.calculatePoints(number), number)

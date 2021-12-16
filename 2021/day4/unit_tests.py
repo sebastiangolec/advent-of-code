@@ -26,5 +26,14 @@ class BingoTest(unittest.TestCase):
         self.assertEqual(4512, winner.score)
         self.assertEqual(24, winner.drawnNumber)
 
+    def test_loser(self):
+        input = open('2021/day4/test_input', 'r').readlines()
+        game = bingo.Bingo(input)
+        winner = game.playToLose()
+
+        self.assertEqual(1, winner.index)
+        self.assertEqual(1924, winner.score)
+        self.assertEqual(13, winner.drawnNumber)
+
 if __name__ == '__main__':
     unittest.main()
