@@ -85,12 +85,12 @@ def find_max_y(vent_lines: list[VentLine]) -> int:
     return max_y
 
 
-def main() -> int:
+def count_overlaps_for_straight_vents() -> int:
     with open('input', 'r') as file:
         input_lines = file.readlines()
         vent_lines = parse(input_lines)
         vent_lines = filter_out_diagonal_lines(vent_lines)
         result = count_overlaps(vent_lines)
         file.close()
-        
+
         return result

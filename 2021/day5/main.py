@@ -2,4 +2,4 @@
 import vents
 
 
-print(vents.main())
+print(vents.count_overlaps_for_straight_vents())

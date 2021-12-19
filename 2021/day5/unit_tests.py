@@ -22,6 +22,7 @@ class Test(unittest.TestCase):
             self.assertEqual(result, expected_result)
             file.close()
 
+
     def test_filterOutDiagonalLines(self):
         lines = [
             vents.VentLine((0, 9), (5, 9)),
@@ -47,7 +48,8 @@ class Test(unittest.TestCase):
             vents.VentLine((3, 4), (1, 4))
         ]
         self.assertEqual(result, expected_result)
-    
+
+
     def test_countOverlaps(self):
         input_lines = [
             vents.VentLine((0, 9), (5, 9)),
@@ -61,8 +63,9 @@ class Test(unittest.TestCase):
         result = vents.count_overlaps(input_lines)
         self.assertEqual(result, 5)
 
+
     def test_one_star_solution(self):
-        result = vents.main()
+        result = vents.count_overlaps_for_straight_vents()
         self.assertEqual(result, 5294)
 
 
