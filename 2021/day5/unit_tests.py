@@ -66,8 +66,7 @@ class Test(unittest.TestCase):
             create_vent_line(3, 4, 1, 4)
         ]
 
-        vents_map = vents.map_vent_lines(input_lines)
-        result = vents.count_overlaps(vents_map)
+        result = vents.VentsMap(input_lines).count_overlaps()
         self.assertEqual(result, 5)
 
 

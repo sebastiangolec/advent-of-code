@@ -31,10 +31,68 @@ class VentLine:
 
     def is_vertical(self) -> bool:
         return self.point1.y != self.point2.y
+    
+
+    def is_diagonal(self) -> bool:
+        return False
 
 
     def is_straight(self) -> bool:
         return self.point1.x == self.point2.x or self.point1.y == self.point2.y
+
+
+class VentsMap:
+    vents_map: numpy.ndarray
+
+    def __init__(self, vent_lines: list[VentLine]):
+        self.vents_map = numpy.zeros(shape=(1000, 1000))
+        self.map_vent_lines(vent_lines)       
+
+
+    def map_vent_lines(self, vent_lines: list[VentLine]) -> numpy.ndarray:
+        for vent_line in vent_lines:
+            if vent_line.is_diagonal():
+                self.map_diagonal_vent(vent_line)
+            elif vent_line.is_horizontal():
+                self.map_horizontal_vent(vent_line)
+            elif vent_line.is_vertical():
+                self.map_vertical_vent(vent_line)
+
+
+    def map_diagonal_vent(vent_line: VentLine):
+        # TODO implement
+        print("TODO implement")
+
+
+    def map_horizontal_vent(self, vent_line: VentLine):
+        point1 = vent_line.point1
+        point2 = vent_line.point2
+        index = min(point1.x, point2.x)
+
+        while index <= max(point1.x, point2.x):
+            self.vents_map[index, point1.y] += 1
+            index += 1
+
+
+    def map_vertical_vent(self, vent_line: VentLine):
+        point1 = vent_line.point1
+        point2 = vent_line.point2
+        index = min(point1.y, point2.y)
+
+        while index <= max(point1.y, point2.y):
+            self.vents_map[point1.x, index] += 1
+            index += 1
+
+
+    def count_overlaps(self) -> int:
+        overlaps = 0
+
+        for i in range(1000):
+            for j in range(1000):
+                if self.vents_map[i, j] > 1:
+                    overlaps += 1
+
+        return overlaps
 
 
 def parse(input_lines: list[str]) -> list[VentLine]:
@@ -56,45 +114,12 @@ def filter_out_diagonal_lines(vent_lines: list[VentLine]) -> list[VentLine]:
     return straight_lines
 
 
-def map_vent_lines(vent_lines: list[VentLine]) -> numpy.ndarray:
-    vents_map = numpy.zeros(shape=(1000, 1000))
-
-    for vent_line in vent_lines:
-        point1 = vent_line.point1
-        point2 = vent_line.point2
-
-        if vent_line.is_horizontal():
-            index = min(point1.x, point2.x)
-            while index <= max(point1.x, point2.x):
-                vents_map[index, point1.y] += 1
-                index += 1
-        elif vent_line.is_vertical():
-            index = min(point1.y, point2.y)
-            while index <= max(point1.y, point2.y):
-                vents_map[point1.x, index] += 1
-                index += 1
-    
-    return vents_map
-
-
-def count_overlaps(vents_map: numpy.ndarray) -> int:
-    overlaps = 0
-
-    for i in range(1000):
-        for j in range(1000):
-            if vents_map[i, j] > 1:
-                overlaps += 1
-
-    return overlaps
-
-
 def count_overlaps_for_straight_vents() -> int:
     with open('input', 'r') as file:
         vent_lines = parse(file.readlines())
         file.close()
 
         vent_lines = filter_out_diagonal_lines(vent_lines)
-        vents_map = map_vent_lines(vent_lines)
-        result = count_overlaps(vents_map)
-
-        return result
+        vents_map = VentsMap(vent_lines)
+        
+        return vents_map.count_overlaps()
