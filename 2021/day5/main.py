@@ -3,3 +3,4 @@ import vents
 
 
 print(vents.count_overlaps_for_straight_vents())
+print(vents.count_overlaps_for_all_vents())

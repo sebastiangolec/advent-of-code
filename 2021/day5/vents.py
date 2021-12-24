@@ -34,15 +34,24 @@ class VentLine:
     
 
     def is_diagonal(self) -> bool:
-        return False
+        return self.point1.x != self.point2.x and self.point1.y != self.point2.y
 
 
     def is_straight(self) -> bool:
         return self.point1.x == self.point2.x or self.point1.y == self.point2.y
 
+    
+    def is_upstair(self) -> bool:
+        return (self.point1.x > self.point2.x and self.point1.y > self.point2.y) or (self.point1.x < self.point2.x and self.point1.y < self.point2.y)
+    
+
+    def is_downstair(self) -> bool:
+        return (self.point1.x > self.point2.x and self.point1.y < self.point2.y) or (self.point1.x < self.point2.x and self.point1.y > self.point2.y)
+
 
 class VentsMap:
     vents_map: numpy.ndarray
+
 
     def __init__(self, vent_lines: list[VentLine]):
         self.vents_map = numpy.zeros(shape=(1000, 1000))
@@ -59,28 +68,56 @@ class VentsMap:
                 self.map_vertical_vent(vent_line)
 
 
-    def map_diagonal_vent(vent_line: VentLine):
-        # TODO implement
-        print("TODO implement")
+    def map_diagonal_vent(self, vent_line: VentLine):
+        if vent_line.is_upstair():
+            self.map_upstairs_vent(vent_line)
+        elif vent_line.is_downstair():
+            self.map_downstairs_vent(vent_line)
+
+    
+    def map_upstairs_vent(self, vent_line: VentLine):
+        base_point: Point
+        distance: int
+
+        if vent_line.point1.x < vent_line.point2.x:
+            base_point = vent_line.point1
+            distance = vent_line.point2.x - vent_line.point1.x
+        else:
+            base_point = vent_line.point2
+            distance = vent_line.point1.x - vent_line.point2.x
+
+        for i in range(0, distance+1):
+            self.vents_map[base_point.x + i, base_point.y + i] += 1
+
+
+    def map_downstairs_vent(self, vent_line: VentLine):
+        base_point: Point
+        distance: int
+
+        if vent_line.point1.x < vent_line.point2.x:
+            base_point = vent_line.point1
+            distance = vent_line.point2.x - vent_line.point1.x
+        else:
+            base_point = vent_line.point2
+            distance = vent_line.point1.x - vent_line.point2.x
+        
+        for i in range(0, distance+1):
+            self.vents_map[base_point.x + i, base_point.y - i] += 1
 
 
     def map_horizontal_vent(self, vent_line: VentLine):
-        point1 = vent_line.point1
-        point2 = vent_line.point2
-        index = min(point1.x, point2.x)
+        index = min(vent_line.point1.x, vent_line.point2.x)
 
-        while index <= max(point1.x, point2.x):
-            self.vents_map[index, point1.y] += 1
+        while index <= max(vent_line.point1.x, vent_line.point2.x):
+            self.vents_map[index, vent_line.point1.y] += 1
             index += 1
 
 
     def map_vertical_vent(self, vent_line: VentLine):
-        point1 = vent_line.point1
-        point2 = vent_line.point2
-        index = min(point1.y, point2.y)
+        index = min(vent_line.point1.y, vent_line.point2.y)
 
-        while index <= max(point1.y, point2.y):
-            self.vents_map[point1.x, index] += 1
+        while index <= max(vent_line.point1.y, vent_line.point2.y):
+            self.vents_map[vent_line.point1.x, index] += 1
             index += 1
 
 
@@ -120,6 +157,14 @@ def count_overlaps_for_straight_vents() -> int:
         file.close()
 
         vent_lines = filter_out_diagonal_lines(vent_lines)
+        vents_map = VentsMap(vent_lines)
+        
+        return vents_map.count_overlaps()
+
+def count_overlaps_for_all_vents() -> int:
+    with open('input', 'r') as file:
+        vent_lines = parse(file.readlines())
+        file.close()
         vents_map = VentsMap(vent_lines)
         
         return vents_map.count_overlaps()
