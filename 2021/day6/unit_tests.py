@@ -53,7 +53,13 @@ class UnitTests(unittest.TestCase):
 
     def test_after_80_days(self):
         result = LanternFish(self.initial_state).simulate(80)
-        self.assertEqual(5934, len(result))        
+        self.assertEqual(5934, len(result))
+    
+
+    # uses approx 100,5 GB of RAM in last step o allocate all values
+    # def test_after_256_days(self):
+        # result = LanternFish(self.initial_state).simulate(256)
+        # self.assertEqual(26984457539, len(result))
 
 
 if __name__ == '__main__':
