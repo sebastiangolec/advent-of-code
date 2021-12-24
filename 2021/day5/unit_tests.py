@@ -74,6 +74,11 @@ class Test(unittest.TestCase):
         result = vents.count_overlaps_for_straight_vents()
         self.assertEqual(result, 5294)
 
+    
+    def test_two_stars_solution(self):
+        result = vents.count_overlaps_for_all_vents()
+        self.assertEqual(result, 21698)
+
 
 if __name__ == '__main__':
     unittest.main()
