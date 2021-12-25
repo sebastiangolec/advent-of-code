@@ -15,14 +15,31 @@ class UnitTests(unittest.TestCase):
         for position, expected_result in self.params_list:
             with self.subTest():
                 crabs = Crabs(self.initial_state)
-                result = crabs.calculate_cost(position)
+                result = crabs.calculate_linear_cost(position)
                 self.assertEqual(expected_result, result)
 
 
-    def test_best_position(self):
+    def test_best_position_linear(self):
         crabs = Crabs(self.initial_state)
         expected_result = (2, 37)
-        result = crabs.find_best_position()
+        result = crabs.find_best_position_simple()
+
+        self.assertEqual(expected_result[0], result[0])
+        self.assertEqual(expected_result[1], result[1])
+
+
+    def test_exponential_cost_for_old_best(self):
+        crabs = Crabs(self.initial_state)
+        expected_result = 206
+        result = crabs.calculate_exponential_cost(2)
+
+        self.assertEqual(expected_result, result)
+
+
+    def test_best_position_exponential(self):
+        crabs = Crabs(self.initial_state)
+        expected_result = (5, 168)
+        result = crabs.find_best_posisiton_exponential()
 
         self.assertEqual(expected_result[0], result[0])
         self.assertEqual(expected_result[1], result[1])
