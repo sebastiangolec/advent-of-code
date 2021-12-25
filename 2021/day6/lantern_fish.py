@@ -3,28 +3,30 @@ class LanternFish():
 
 
     def __init__(self, initial_state: str):
-        state = []
+        state = [0, 0, 0, 0, 0, 0, 0, 0, 0]
         for str in initial_state.split(","):
-            state.append(int(str))
+            state[int(str)] += 1
         
         self.state = state
 
     
-    def simulate(self, days: int) -> list[int]:
+    def simulate(self, days: int):
         for day in range(0, days):
-            new_state = []
-            new_fishes = []
+            new_state = [0, 0, 0, 0, 0, 0, 0, 0, 0]
 
-            for fish in self.state:
-                if fish == 0:
-                    new_state.append(6)
-                    new_fishes.append(8)
-                else:
-                    new_state.append(fish - 1)
-            
-            for fish in new_fishes:
-                new_state.append(fish)
+            new_state[8] += self.state[0] # new born fishses
+            new_state[6] += self.state[0] # fishes that gave born today
+
+            for i in range(0, 8):
+                new_state[i] += self.state[i+1]
 
             self.state = new_state
-        
-        return self.state
+
+    
+    def calculate_population(self) -> int:
+        population = 0
+
+        for number in self.state:
+            population += number
+
+        return population

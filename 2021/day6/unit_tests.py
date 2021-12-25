@@ -28,38 +28,47 @@ class UnitTests(unittest.TestCase):
     def test_sumulation(self):
         for days, expected_result in self.params_list:
             with self.subTest():
-                result = LanternFish(self.initial_state).simulate(days)
-                self.assertEqual(expected_result, result)
+                ecosystem = LanternFish(self.initial_state)
+                ecosystem.simulate(days)
+                result = ecosystem.calculate_population()
+                self.assertEqual(len(expected_result), result)
 
 
     def test_after_1_day(self):
-        result = LanternFish(self.initial_state).simulate(1)
+        ecosystem = LanternFish(self.initial_state)
+        ecosystem.simulate(1)
+        result = ecosystem.calculate_population()
         expected_result = [2,3,2,0,1]
-        self.assertEqual(expected_result, result)
+        self.assertEqual(len(expected_result), result)
 
 
     def test_after_2_days(self):
-        result = LanternFish(self.initial_state).simulate(2)
+        ecosystem = LanternFish(self.initial_state)
+        ecosystem.simulate(2)
+        result = ecosystem.calculate_population()
         expected_result = [1,2,1,6,0,8]
-        self.assertEqual(expected_result, result)
+        self.assertEqual(len(expected_result), result)
 
 
     def test_after_18_days(self):
-        result = LanternFish(self.initial_state).simulate(18)
-        expected_result = [6,0,6,4,5,6,0,1,1,2,6,0,1,1,1,2,2,3,3,4,6,7,8,8,8,8]
-        self.assertEqual(expected_result, result)
-        self.assertEqual(26, len(result))
+        ecosystem = LanternFish(self.initial_state)
+        ecosystem.simulate(18)
+        result = ecosystem.calculate_population()
+        self.assertEqual(26, result)
 
 
     def test_after_80_days(self):
-        result = LanternFish(self.initial_state).simulate(80)
-        self.assertEqual(5934, len(result))
+        ecosystem = LanternFish(self.initial_state)
+        ecosystem.simulate(80)
+        result = ecosystem.calculate_population()
+        self.assertEqual(5934, result)
     
 
-    # uses approx 100,5 GB of RAM in last step o allocate all values
-    # def test_after_256_days(self):
-        # result = LanternFish(self.initial_state).simulate(256)
-        # self.assertEqual(26984457539, len(result))
+    def test_after_256_days(self):
+        ecosystem = LanternFish(self.initial_state)
+        ecosystem.simulate(256)
+        result = ecosystem.calculate_population()
+        self.assertEqual(26984457539, result)
 
 
 if __name__ == '__main__':
