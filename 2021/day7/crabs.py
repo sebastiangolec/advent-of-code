@@ -50,7 +50,6 @@ class Crabs:
         return (results.index(min_cost), min_cost)
 
 
-    # try to reimplement this becasue finding solution took some time
     def find_best_posisiton_exponential(self) -> tuple:
         results = [0] * (self.max_index + 1)
 
