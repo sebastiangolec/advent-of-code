@@ -1,11 +1,13 @@
 class Crabs:
     initial_state = []
     max_index: int
+    exp_cost_table = []
 
     def __init__(self, input_str: str):
         initial_state = [int(item) for item in input_str.split(',')]
         self.max_index = max(initial_state)
         self.initial_state = [0] * (self.max_index + 1)
+        self.exp_cost_table = [0] * (self.max_index + 1)
 
         for crab in initial_state:
             self.initial_state[crab] += 1
@@ -63,7 +65,12 @@ class Crabs:
     def calculate_cost(self, number: int):
         cost = 0
 
-        for i in range(1, number+1):
-            cost += i
+        if self.exp_cost_table[number] != 0:
+            cost = self.exp_cost_table[number]
+        else:
+            for i in range(1, number+1):
+                cost += i
+                
+            self.exp_cost_table[number] = cost
 
         return cost
