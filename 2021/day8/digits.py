@@ -8,6 +8,7 @@ class Digit:
     def __init__(self, word: str):
         self.word = word
         self.possible_digits = []
+        self.digit = None
         self.decode_by_length(len(word))
 
     def decode_by_length(self, word_length: int):
@@ -41,6 +42,37 @@ class Digit:
                 self.is_decoded = True
                 self.has_unique_number_of_segments = True
 
+    def decode_by_one(self, word: str):
+        if not self.is_decoded:
+            if word[0] in self.word and word[1] in self.word:
+                self.remove_from_possible_digits([2, 5, 6])
+
+            self.check_if_decoded()
+
+    def decode_by_seven(self, word: str):
+        if not self.is_decoded:
+            if word[0] in self.word and word[1] in self.word and word[2] in self.word:
+                self.remove_from_possible_digits([2, 5, 6])
+
+            self.check_if_decoded()
+
+    def decode_by_four(self, word: str):
+        if not self.is_decoded:
+            if word[0] in self.word and word[1] in self.word and word[2] in self.word and word[3] in self.word:
+                self.remove_from_possible_digits([0, 2, 3, 5, 6])
+
+            self.check_if_decoded()
+
+    def check_if_decoded(self):
+        if not self.is_decoded and len(self.possible_digits) == 1:
+            self.digit = self.possible_digits[0]
+            self.is_decoded = True
+
+    def remove_from_possible_digits(self, numbers: list[int]):
+        for number in numbers:
+            if number in self.possible_digits:
+                self.possible_digits.remove(number)
+
 
 class Cipher:
     input_digits: list[Digit]
@@ -57,6 +89,33 @@ class Cipher:
 
         for word in output_part:
             self.output_digits.append(Digit(word))
+
+    def decode_by_elimination(self):
+        one_digit_word = self.find_word_by_number(1)
+        four_digit_word = self.find_word_by_number(4)
+        seven_digit_word = self.find_word_by_number(7)
+
+        if one_digit_word[0] is True:
+            for digit in self.input_digits + self.output_digits:
+                digit.decode_by_one(one_digit_word[1])
+
+        if four_digit_word[0] is True:
+            for digit in self.input_digits + self.output_digits:
+                digit.decode_by_four(four_digit_word[1])
+
+        if seven_digit_word[0] is True:
+            for digit in self.input_digits + self.output_digits:
+                digit.decode_by_seven(seven_digit_word[1])
+
+    def find_word_by_number(self, number: int) -> (bool, str):
+        result = False, ''
+
+        for digit in self.input_digits + self.output_digits:
+            if digit.digit is not None and number == digit.digit:
+                result = True, digit.word
+                break
+
+        return result
 
     def print(self):
         output_string = ''
@@ -103,5 +162,6 @@ class DigitsParser:
 
         return counter
 
-    def decode(self) -> tuple:
-        return 0, 1
+    def decode(self):
+        for cipher in self.ciphers:
+            cipher.decode_by_elimination()
