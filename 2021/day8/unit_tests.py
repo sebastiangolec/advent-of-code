@@ -8,7 +8,7 @@ class UnitTest(unittest.TestCase):
             digits_parser = DigitsParser(file.readlines())
             file.close()
 
-            self.assertEqual(26, digits_parser.count_unique_segment_digits())
+            self.assertEqual(26, digits_parser.count_output_digits_with_unique_number_of_segments())
 
     # TODO reimplement according to changes in data structure of solution
     # def test_decoding_small_example(self):
