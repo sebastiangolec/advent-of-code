@@ -46,6 +46,8 @@ class Digit:
         if not self.is_decoded:
             if word[0] in self.word and word[1] in self.word:
                 self.remove_from_possible_digits([2, 5, 6])
+            else:
+                self.remove_from_possible_digits([0, 1, 3, 4, 7, 8, 9])
 
             self.check_if_decoded()
 
@@ -53,6 +55,8 @@ class Digit:
         if not self.is_decoded:
             if word[0] in self.word and word[1] in self.word and word[2] in self.word:
                 self.remove_from_possible_digits([2, 5, 6])
+            else:
+                self.remove_from_possible_digits([0, 1, 3, 4, 7, 8, 9])
 
             self.check_if_decoded()
 
@@ -60,6 +64,8 @@ class Digit:
         if not self.is_decoded:
             if word[0] in self.word and word[1] in self.word and word[2] in self.word and word[3] in self.word:
                 self.remove_from_possible_digits([0, 2, 3, 5, 6])
+            else:
+                self.remove_from_possible_digits([4, 8, 9])
 
             self.check_if_decoded()
 
