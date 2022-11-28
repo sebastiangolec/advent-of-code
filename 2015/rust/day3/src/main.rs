@@ -50,7 +50,7 @@ fn part_2(input: &str) -> usize {
     let mut turn = true;
 
     for char in input.chars() {
-        let mut pointer = &mut (0, 0);
+        let mut pointer: &mut (i32, i32);
 
         if turn {
             pointer = &mut santa;
