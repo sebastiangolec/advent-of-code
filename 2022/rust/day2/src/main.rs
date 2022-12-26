@@ -12,12 +12,10 @@ fn main() {
         let enemy_move = *characters.get(0).unwrap();
         score += calculate_result(enemy_move, my_move);
 
-        if my_move == "X" {
-            score += 1;
-        } else if my_move == "Y" {
-            score += 2;
-        } else {
-            score += 3;
+        match my_move {
+            "X" => score += 1,
+            "Y" => score += 2,
+            _ => score += 3
         }
 
         total_score += score;
@@ -32,30 +30,27 @@ fn main() {
 fn calculate_result(enemy_move: &str, my_move: &str) -> u32 {
     let mut score = 0;
 
-    if enemy_move == "A" { 
-        if my_move == "X" {
-            score = 3;
-        } else if my_move == "Y" {
-            score = 6;
-        } else {
-            score = 0; 
-        }
-    } else if enemy_move == "B" {
-        if my_move == "X" {
-            score = 0
-        } else if my_move == "Y" {
-            score = 3;
-        } else {
-            score = 6;
-        }
-    } else if enemy_move == "C" {
-        if my_move == "X" {
-            score = 6;
-        } else if my_move == "Y" {
-            score = 0;
-        } else {
-            score = 3
-        }
+    match enemy_move {
+        "A" => {
+            match my_move {
+                "X" => score = 3,
+                "Y" => score = 6,
+                _ => score = 0
+            }
+        },
+        "B" => {
+            match my_move {
+                "X" => score = 0,
+                "Y" => score = 3,
+                _ => score = 6
+            }
+        },
+        "C" => match my_move {
+            "X" => score = 6,
+            "Y" => score = 0,
+            _ => score = 3
+        },
+        _ => score = 0
     }
 
     return score;
